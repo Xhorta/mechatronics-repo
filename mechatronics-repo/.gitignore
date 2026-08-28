@@ -1,0 +1,38 @@
+# ---- MATLAB / Simulink ----
+*.asv
+*.m~
+*.mex*
+*.slxc
+*.autosave
+slprj/
+sccprj/
+codegen/
+*.slx.original
+*.slx.r*
+*.mdl.r*
+*.mat.bak
+
+# Simulink cache / build artifacts
+*_grt_rtw/
+*_ert_rtw/
+*.rtw
+*.tlc
+*.obj
+*.o
+
+# Simulink report generator
+*.pdf
+!docs/**/*.pdf
+
+# ---- OS junk ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- Editor junk ----
+.vscode/
+*.swp
+
+# ---- Large / generated data (adjust as needed) ----
+*.mat
+!data/**/*.mat
