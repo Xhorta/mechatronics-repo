@@ -121,7 +121,7 @@ rD_S3_initial = [0.1208024, 1.2209018];  % m
 S3xy = Dxy + rD_S3_initial;
 S3 = [S3xy 0];
 
-
+tic
 %% ============================================================
 %% POSITION ANALYSIS - FULL 0 TO 360 DEGREE SWEEP
 %% ============================================================
@@ -797,11 +797,17 @@ fprintf('FF = (%.4f, %.4f) N\n',FF_dynamic(1,:));
 fprintf('FG = (%.4f, %.4f) N\n',FG_dynamic(1,:));
 fprintf('Dynamic Input Torque = %.4f N*m\n',Tin_dynamic(1));
 
+computationTime = toc;
+
+fprintf('Computation time = %.4f seconds\n',computationTime);
+
+tic
+
 %% PLOTS
 %% ============================================================
 
 % ---------- Kinematic outline: first position ----------
-figure('Name','Kinematic Outline - Inital Position');
+figure('Name','Kinematic Outline - Initial Position');
 hold on;
 axis equal;
 grid on;
@@ -827,7 +833,7 @@ end
 
 xlabel('X Position (m)');
 ylabel('Y Position (m)');
-title('Six-Bar Linkage - inital Position');
+title('Six-Bar Linkage - Initial Position');
 legend('Location','best');
 
 % ---------- Joint position traces ----------
@@ -945,7 +951,9 @@ xlabel('Input Crank Rotation (deg)');
 ylabel('Dynamic Joint Force Magnitude (N)');
 title('Dynamic Joint Force Magnitudes vs Input Crank Rotation');
 legend('A','B','C','D','E','F','G','Location','best');
+plottingTime = toc;
 
+fprintf('Plotting time = %.4f seconds\n',plottingTime);
 %% STATIC MAXIMUM / MINIMUM TORQUE SUMMARY
 %% ============================================================
 
@@ -990,10 +998,16 @@ StaticForceMag=[vecnorm(FA_static,2,2),vecnorm(FB_static,2,2),vecnorm(FC_static,
 
 DynamicForceMag=[vecnorm(FA_dynamic,2,2),vecnorm(FB_dynamic,2,2),vecnorm(FC_dynamic,2,2),vecnorm(FD_dynamic,2,2),vecnorm(FE_dynamic,2,2),vecnorm(FF_dynamic,2,2),vecnorm(FG_dynamic,2,2)];
 jointNames={'A','B','C','D','E','F','G'};
+fprintf('\n--- Minimum Joint Force Magnitudes ---\n');
+
+for j = 1:7
+    fprintf('Joint %s: static min = %.3f N, dynamic min = %.3f N\n', ...
+        jointNames{j}, min(StaticForceMag(:,j),[],'omitnan'),min(DynamicForceMag(:,j),[],'omitnan'));
+end
 
 fprintf('\n--- Maximum Joint Force Magnitudes ---\n');
 for j=1:7
-    fprintf('Joint %s: static max = %.3f N, dynamic max = %.3f N\n',...
+    fprintf('Joint %s: static max = %.3f N, dynamic max = %.3f N\n', ...
         jointNames{j},max(StaticForceMag(:,j),[],'omitnan'),max(DynamicForceMag(:,j),[],'omitnan'));
 end
 
